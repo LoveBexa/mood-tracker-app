@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Modal,
+  Image,
+} from "react-native";
 
 // Actual js code related to outputting single mood items
 function MoodInput(props) {
@@ -19,53 +27,66 @@ function MoodInput(props) {
   }
 
   return (
-    <View style={styles.inputContainer}>
-      <View style={styles.emojiContainer}>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😊")}>
-          😊
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😢")}>
-          😢
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😡")}>
-          😡
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😄")}>
-          😄
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😭")}>
-          😭
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😎")}>
-          😎
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("🥳")}>
-          🥳
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😋")}>
-          😋
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😴")}>
-          😴
-        </Text>
-        <Text style={styles.emoji} onPress={() => handleEmojiClick("😅")}>
-          😅
-        </Text>
-      </View>
-      <View style={styles.textContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Why do you feel this way?"
-          onChangeText={moodInputHandler}
-          value={enteredMoodText}
+    <Modal visible={props.visible} animationType="slide">
+      <View style={styles.inputContainer}>
+        <Image
+          source={require("../assets/images/thinking-woman.png")}
+          style={styles.image}
         />
-        <Button
-          title="Add Mood"
-          onPress={addMoodHandler}
-          style={styles.button}
-        />
+        <View style={styles.emojiContainer}>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😊")}>
+            😊
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😢")}>
+            😢
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😡")}>
+            😡
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😄")}>
+            😄
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😭")}>
+            😭
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😎")}>
+            😎
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("🥳")}>
+            🥳
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😋")}>
+            😋
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😴")}>
+            😴
+          </Text>
+          <Text style={styles.emoji} onPress={() => handleEmojiClick("😅")}>
+            😅
+          </Text>
+        </View>
+        <View style={styles.textContainer}>
+          <TextInput
+            style={styles.textInputBox}
+            placeholder="How do you feel?"
+            onChangeText={moodInputHandler}
+            value={enteredMoodText}
+          />
+          <View style={styles.buttonContainer}>
+            <View style={styles.addMoodButton}>
+              <Button
+                title="Add Mood"
+                onPress={addMoodHandler}
+                color="#000000"
+              />
+            </View>
+            <View style={styles.cancelButton}>
+              <Button title="Cancel" onPress={props.onCancel} color="#8d7f7f" />
+            </View>
+          </View>
+        </View>
       </View>
-    </View>
+    </Modal>
   );
 }
 
@@ -74,36 +95,59 @@ export default MoodInput;
 // Good practise to keep styles closer to JSX code
 const styles = StyleSheet.create({
   inputContainer: {
-    flexDirection: "column", // Display components in columns
-    justifyContent: "flex-start",
-    alignItems: "stretch",
-    marginBottom: 25,
-    borderBottomWidth: 1,
-    borderBottomColor: "#707070",
+    flex: 1,
+    flexDirection: "column", // column is default anyways
+    justifyContent: "center",
+    backgroundColor: "#d7d4d0c2",
+  },
+  image: {
+    width: 400,
+    height: 400,
+    justifyContent: "center",
+    alignItems: "center",
   },
   textContainer: {
-    flexDirection: "row", // Display text input and button in a row
-    justifyContent: "space-between",
+    flex: 3,
+    flexDirection: "column", // Display text input and button in a row
+    justifyContent: "top",
     alignItems: "center",
-    marginBottom: 8,
-    marginBottom: 25,
+    marginHorizontal: 20,
+    marginVertical: 10,
+    borderWidth: 0,
+    borderColor: "#c82929",
   },
-  textInput: {
+  textInputBox: {
     borderWidth: 1,
-    borderColor: "#CCCCCC",
-    width: "70%",
+    borderColor: "#000000",
+    backgroundColor: "#FFFFFF",
+    width: "100%",
     padding: 8,
-  },
-  button: {
-    width: "30%", // Set button width to take up 30% of the row
+    borderRadius: 10,
   },
   emojiContainer: {
-    flexDirection: "row", // Display emojis in a row
-    justifyContent: "space-between",
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
-    margin: 25,
+    flexDirection: "row", // Display emojis in a row
+    borderWidth: 0,
+    borderColor: "#000000",
+    marginHorizontal: 20,
+    marginVertical: 5,
+    backgroundColor: "#d3cbcb",
+    borderRadius: 15,
   },
   emoji: {
-    fontSize: 20,
+    fontSize: 25,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginVertical: 10,
+  },
+  addMoodButton: {
+    marginHorizontal: 5,
+    width: "50%",
+  },
+  cancelButton: {
+    width: "50%",
   },
 });

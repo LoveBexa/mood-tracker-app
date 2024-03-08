@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View, Pressable } from "react-native";
 
-// Actual js code related to outputting single mood items
+// Actual js code related to outputting single mood  items
 function MoodItem(props) {
   return (
     // Built in bind allows pre-configure function for future exec
-    <Pressable onPress={props.onDeleteItem.bind(this, props.id)}>
+    <Pressable
+      android_ripple={{ color: "#cc259c" }}
+      onPress={props.onDeleteItem.bind(this, props.id)}
+      style={({ pressed }) => pressed && styles.pressedItem}
+    >
       <View style={styles.moodItem}>
         <Text style={styles.moodText}>{props.text}</Text>
       </View>
@@ -17,14 +21,18 @@ export default MoodItem;
 // Good practise to keep styles closer to JSX code
 const styles = StyleSheet.create({
   moodText: {
-    color: "#2e37b4",
+    color: "#FFFFFF",
+    fontSize: 15,
   },
   moodItem: {
     borderColor: "#2e37b4",
-    borderWidth: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#a47e7e",
+    borderWidth: 0,
     borderRadius: 5,
-    margin: 2,
-    padding: 10,
+    padding: 15,
+    marginVertical: 2,
+  },
+  pressedItem: {
+    opacity: 0.5,
   },
 });

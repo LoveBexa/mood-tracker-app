@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { StyleSheet, View, Text, FlatList, Button } from "react-native";
 // import { StatusBar } from 'expo-status-bar';
 
 import MoodItem from "./components/MoodItem";
@@ -8,6 +8,16 @@ import MoodInput from "./components/MoodInput";
 export default function App() {
   // Register a new state -> const [message, setMessage] = useState("");
   const [currentMoods, setCurrentMoods] = useState([]);
+  const [modalIsVisable, setModalIsVisable] = useState(false);
+
+  // Control modal visible and not-visible
+  function startAddMoodHandler() {
+    setModalIsVisable(true);
+  }
+
+  function endAddMoodHandler() {
+    setModalIsVisable(false);
+  }
 
   // When button is clicked action is fired
   function addMoodHandler(enteredMoodText) {
@@ -15,7 +25,7 @@ export default function App() {
       ...currentMoods,
       { text: enteredMoodText, id: Math.random().toString() },
     ]);
-    // console.log(currentMoods)
+    endAddMoodHandler();
   }
   // Event listening props are used to connect to above functions
 
@@ -29,10 +39,14 @@ export default function App() {
 
   return (
     <View style={styles.appContainer}>
-      <MoodInput onAddGoal={addMoodHandler} />
-
+      <Button title="Add Mood" color="#040404" onPress={startAddMoodHandler} />
+      <MoodInput
+        visible={modalIsVisable}
+        onAddGoal={addMoodHandler}
+        onCancel={endAddMoodHandler}
+      />
       <View style={styles.moodsContainer}>
-        <Text> List of moods...</Text>
+        <Text> All your past moods...</Text>
         <FlatList
           data={currentMoods}
           renderItem={(itemData) => {
@@ -62,10 +76,14 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: "#AA0000",
     borderWidth: 0,
+    backgroundColor: "#d5d5d5",
   },
   moodsContainer: {
     flex: 5,
-    padding: 5,
+    padding: 15,
     borderWidth: 0,
+    marginVertical: 10,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 0,
   },
 });
